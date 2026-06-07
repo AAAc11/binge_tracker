@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,27 +27,6 @@ class BingeTrackerApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const HomeScreen(),
-    );
-  }
-}
-
-//homescreen
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Binge Tracker'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'TEST',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
     );
   }
 }
