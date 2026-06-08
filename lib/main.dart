@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'home_screen.dart';
+import 'main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class BingeTrackerApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }

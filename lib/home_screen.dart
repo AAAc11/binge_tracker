@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'show_repository.dart';
 import 'show_api_service.dart';
+import 'details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,17 +63,26 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: shows.length,
               itemBuilder: (context, index) {
                 final show = shows[index];
-                return Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      //zdjecie w tle
-                      show.imageUrl.isNotEmpty
-                          ? Image.network(show.imageUrl, fit: BoxFit.cover)
-                          : const Icon(Icons.movie, size: 50),
-                    ],
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ShowDetailsScreen(show: show),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        show.imageUrl.isNotEmpty
+                            ? Image.network(show.imageUrl, fit: BoxFit.cover)
+                            : const Icon(Icons.movie, size: 50),
+                      ],
+                    ),
                   ),
                 );
               },
