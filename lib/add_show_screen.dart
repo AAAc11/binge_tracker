@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'show_repository.dart';
 import 'show_local_database.dart';
 import 'dart:math';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AddShowScreen extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -28,15 +29,34 @@ class AddShowScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 final newShow = Show(
-                  id: Random().nextInt(1000000), //losowe ID
+                  id: -Random().nextInt(1000000) - 1, //ujemne ID - unikalne wzgledem API
                   name: nameController.text,
-                  imageUrl: "", //brak zdjęcia
+                  imageUrl: "",
                   summary: summaryController.text,
                   genres: genreController.text,
                   isCustom: true,
                 );
                 await ShowLocalDatabase.addShow(newShow);
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Dodano serial")));
+
+                //Event 3 - rejestrowanie utworzenia wlasnego serialu
+                await FirebaseAnalytics.instance.logEvent(
+                  name: "custom_show_created",
+                  parameters: {
+                    "show_name": newShow.name,
+                  },
+                );
+
+                nameController.clear();
+                genreController.clear();
+                summaryController.clear();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Center(
+                      child: Text("Dodano serial"),
+                    ),
+                  ),
+                );
               },
               child: const Text("Zapisz"),
             ),

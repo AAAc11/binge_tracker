@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "263467050238",
+    "project_id": "binge-tracker-aaf20",
+    "storage_bucket": "binge-tracker-aaf20.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263467050238:android:cf3135ebeb8502dac4f1af",
+        "android_client_info": {
+          "package_name": "com.l2ac.projekt_zaliczeniowy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASAdUrKqX1JxQre0p0HR8wxrs_9ZFORDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

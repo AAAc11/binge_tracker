@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'show_repository.dart';
-import 'show_api_service.dart';
 import 'details_screen.dart';
+import 'show_discover_database.dart';
+import 'show_sync_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,13 +18,26 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     //ladowanie seriali
-    showsFuture = ShowApiService.fetchShows();
+    showsFuture = loadShows();
+  }
+
+  //laduje z Hive albo pobiera z API jesli baza pusta
+  Future<List<Show>> loadShows() async {
+    try {
+      await ShowSyncService.loadInitialDataIfNeeded();
+    } catch (e) {
+      //brak internetu przy pierwszym uruchomieniu - jesli baza ma dane - ignorowanie bledu
+      if (ShowDiscoverDatabase.isEmpty()) {
+        rethrow;
+      }
+    }
+    return ShowDiscoverDatabase.getShows();
   }
 
   //funkcja odswiezania
   Future<void> _refreshData() async {
     setState(() {
-      showsFuture = ShowApiService.fetchShows();
+      showsFuture = ShowSyncService.refreshFromApi();
     });
   }
 
@@ -79,8 +93,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       fit: StackFit.expand,
                       children: [
                         show.imageUrl.isNotEmpty
-                            ? Image.network(show.imageUrl, fit: BoxFit.cover)
-                            : const Icon(Icons.movie, size: 50),
+                            ? Image.network(
+                          show.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[800],
+                              padding: const EdgeInsets.all(8),
+                              child: Center(
+                                child: Text(
+                                  show.name,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                            : Container(
+                          color: Colors.grey[800],
+                          padding: const EdgeInsets.all(8),
+                          child: Center(
+                            child: Text(
+                              show.name,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

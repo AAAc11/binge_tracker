@@ -26,4 +26,20 @@ class ShowApiService {
       throw Exception("Błąd pobierania danych z serweru");
     }
   }
+  static Future<Show> fetchShowDetails(int id) async {
+    final response = await http.get(Uri.parse("https://api.tvmaze.com/shows/$id"));
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return Show(
+        id: json["id"],
+        name: json["name"],
+        imageUrl: json["image"] != null ? json["image"]["medium"] : "",
+        summary: json["summary"] ?? "Brak opisu",
+        genres: (json["genres"] as List).join(", "),
+      );
+    } else {
+      throw Exception("Błąd pobierania szczegółów serialu");
+    }
+  }
 }
